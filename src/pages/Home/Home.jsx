@@ -6,24 +6,19 @@ import FormComponent from '../../components/FormComponent/FormComponent';
 import './Home.css';
 
 function Home() {
-    const [productList, setProductList] = useState([
-        { asin: "123", locale: "he", price: 123, name: "my product1", link: "http://my-product1:3000" },
-        { asin: "423", locale: "he", price: 134, name: "my product2", link: "http://my-product2:3000" },
-        { asin: "333", locale: "he", price: 125, name: "my product3", link: "http://my-product3:3000" },
-    ]);
-    const [sellerName, setSellerName] = useState('')
-
+    const [sellerName, setSellerName] = useState(null)
     const { isError: isCreateProductError, mutateAsync: createProduct } = useCreateProduct();
-    // const { isLoading, isError: isReadProductsError, data: productList } = useReadProducts(sellerName);
+    const { isLoading: isReadProductLoading, isError: isReadProductsError, data: productList, refetch } = useReadProducts(sellerName);
 
     async function createProductHandler(event, newProduct) {
         event.preventDefault();
         await createProduct(newProduct);
-        console.log("create new product", createProduct)
+        refetch();
+        console.log("create new product")
     }
 
     function handleChangeSellerName(event, sellerName) {
-        event.stopPropagation();
+        event.preventDefault();
         setSellerName(sellerName);
         console.log("change products by seller name");
     }
@@ -31,10 +26,10 @@ function Home() {
     return (
         <>
             <h1>Sellers Platform React SPA</h1>
-            <SearchBySellerComponent getProductsBySellerName={handleChangeSellerName} />
+            <SearchBySellerComponent handleChangeSellerName={handleChangeSellerName} />
             <div className="main">
                 <FormComponent isCreateProductError={isCreateProductError} createProductHandler={createProductHandler} />
-                <ProductListComponent isLoading={null} isError={null} productList={productList} />
+                <ProductListComponent isLoading={isReadProductLoading} isError={isReadProductsError} productList={productList} />
             </div>
             <h1></h1>
         </>

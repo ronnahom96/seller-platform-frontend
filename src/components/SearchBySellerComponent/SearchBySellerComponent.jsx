@@ -1,16 +1,16 @@
 import { useState } from "react";
 import './SearchBySellerComponent.css';
 
-function SearchBySellerComponent({ getProductsBySellerName }) {
+function SearchBySellerComponent({ handleChangeSellerName }) {
     const [inputSellerName, setInputSellerName] = useState('');
 
     return (
-        <form className="search-seller-container">
+        <form className="search-seller-container" onSubmit={(e) => handleChangeSellerName(e, inputSellerName)}>
             <label>Seller Name
-                <input type="text" onChange={e => setInputSellerName(e.target.value)}
-                    value={inputSellerName} />
+                <input style={{ margin: "2%" }} type="text"
+                    onChange={e => setInputSellerName(e.target.value)} value={inputSellerName} />
             </label>
-            <button className="search-seller-btn" type="submit" onChange={getProductsBySellerName}>Change Seller</button>
+            <button type="submit">Change Seller</button>
         </form>
 
     )

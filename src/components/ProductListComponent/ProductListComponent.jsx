@@ -1,19 +1,25 @@
 import './ProductListComponent.css';
 
+const headers = ['ASIN', 'Locale', 'Price', 'Product Name', 'Product Link'];
 
-function ProductListComponent({ productList }) {
-    const headers = ['ASIN', 'Locale', 'Price', 'Product Name', 'Product Link'];
+function ProductListComponent({ isLoading, isError, productList }) {
+    if (isError) {
+        <h1>An error occurred during fetch products</h1>
+    }
+
     return (
-        <table className="card">
+        <table>
             <thead>
                 <tr>
-                    {headers.map((header, i) => {
-                        <th key={i}>{header}</th>
-                    })}
+                    {headers.map(header => (
+                        <th key={header}>{header}</th>
+                    ))}
                 </tr>
             </thead>
             <tbody>
-                {productList.map(product => (
+                {isLoading ? (
+                    <tr><td>Fetching data...</td></tr>
+                ) : productList && productList.map(product => (
                     <tr key={`${product.asin}-${product.locate}`}>
                         <td>
                             {product.asin}
