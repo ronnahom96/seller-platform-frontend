@@ -2,12 +2,12 @@ import { useState } from "react";
 import './FormComponent.css';
 
 function FormComponent({ isCreateProductError, createProductHandler }) {
-    const [asin, setAsin] = useState('2');
-    const [locale, setLocale] = useState('2');
+    const [asin, setAsin] = useState('');
+    const [locale, setLocale] = useState('');
     const [price, setPrice] = useState(0);
-    const [name, setName] = useState('2');
-    const [link, setLink] = useState('2');
-    const [sellerName, setSellerName] = useState('2');
+    const [name, setName] = useState('');
+    const [link, setLink] = useState('');
+    const [sellerName, setSellerName] = useState('');
 
     function handleCreateProduct(e) {
         createProductHandler(e, { asin, locale, price, name, link, sellerName, availability: true });
