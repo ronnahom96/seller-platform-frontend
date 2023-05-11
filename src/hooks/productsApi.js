@@ -5,12 +5,15 @@ const BASE_URL = 'http://localhost:3000/products';
 
 export function useCreateProduct() {
     return useMutation(async (product) => {
-        const response = await axios.post(`${BASE_URL}`, product);
+        const response = await axios.post(BASE_URL, product);
         return response.data;
     }, {
         onError: (err) => {
             console.log('Error:', err);
         },
+        onSuccess: (product) => {
+            console.log("data", product);
+        }
     });
 }
 
@@ -49,11 +52,14 @@ export function useDeleteBatchProducts() {
 
 export function useReadProducts(sellerName, availability = true) {
     return useQuery(['productBySellerName', sellerName], async () => {
-        const response = await axios.get(`${BASE_URL}?sellerName=${sellerName}&availability=${availability}`);
+        const response = await axios.get(BASE_URL, { params: { sellerName, availability } });
         return response.data;
     }, {
         onError: (err) => {
             console.log('Error:', err);
+        },
+        onSuccess: (data) => {
+            console.log("successfully fetch products", data);
         },
     });
 }
