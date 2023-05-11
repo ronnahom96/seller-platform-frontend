@@ -1,7 +1,9 @@
-import { useQuery, useMutation } from 'react-query';
+import { useQuery, useMutation, QueryClient } from 'react-query';
 import axios from 'axios';
 
 const BASE_URL = 'http://localhost:3000/products';
+
+const queryClient = new QueryClient();
 
 export function useCreateProduct() {
     return useMutation(async (product) => {
@@ -12,7 +14,8 @@ export function useCreateProduct() {
             console.log('Error:', err);
         },
         onSuccess: (product) => {
-            console.log("data", product);
+            queryClient.invalidateQueries(["productBySellerName"])
+            console.log("successfully create product", product);
         }
     });
 }
@@ -41,17 +44,21 @@ export function useUpdateProduct() {
 
 export function useDeleteBatchProducts() {
     return useMutation(async (productIds) => {
-        const response = await axios.post(`${BASE_URL}/delete-batch`, { productIds });
+        const response = await axios.post(`${BASE_URL}/delete-batch`, productIds);
         return response.data;
     }, {
         onError: (err) => {
             console.log('Error:', err);
         },
+        onSuccess: (product) => {
+            queryClient.invalidateQueries(["productBySellerName"])
+            console.log("successfully delete product", product);
+        }
     });
 }
 
 export function useReadProducts(sellerName, availability = true) {
-    return useQuery(['productBySellerName', sellerName], async () => {
+    return useQuery(['productBySellerName'], async () => {
         const response = await axios.get(BASE_URL, { params: { sellerName, availability } });
         return response.data;
     }, {
