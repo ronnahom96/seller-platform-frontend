@@ -13,18 +13,13 @@ function Home() {
     ]);
     const [sellerName, setSellerName] = useState('')
 
-    const createProduct = useCreateProduct();
-    // const { isLoading, isError, data: productList } = useReadProducts(sellerName);
+    const { isError: isCreateProductError, mutateAsync: createProduct } = useCreateProduct();
+    // const { isLoading, isError: isReadProductsError, data: productList } = useReadProducts(sellerName);
 
     async function createProductHandler(event, newProduct) {
-        event.stopPropagation();
-        try {
-            await createProduct.mutateAsync(newProduct);
-        } catch (e) {
-            console.error(e);
-        }
-
-        console.log("create new product", newProduct)
+        event.preventDefault();
+        await createProduct(newProduct);
+        console.log("create new product", createProduct)
     }
 
     function handleChangeSellerName(event, sellerName) {
@@ -38,9 +33,10 @@ function Home() {
             <h1>Sellers Platform React SPA</h1>
             <SearchBySellerComponent getProductsBySellerName={handleChangeSellerName} />
             <div className="main">
-                <FormComponent createProductHandler={createProductHandler} />
+                <FormComponent isCreateProductError={isCreateProductError} createProductHandler={createProductHandler} />
                 <ProductListComponent isLoading={null} isError={null} productList={productList} />
             </div>
+            <h1></h1>
         </>
     )
 }
