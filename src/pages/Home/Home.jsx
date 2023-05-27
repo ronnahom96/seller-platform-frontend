@@ -26,7 +26,7 @@ function Home() {
 
     async function handleDeleteProducts(productIds) {
         await deleteProduct(productIds)
-        console.log("delete product",productIds);
+        console.log("delete product", productIds);
     }
 
     return (
@@ -38,7 +38,7 @@ function Home() {
                 <ProductListComponent isLoading={isReadProductLoading} isError={isReadProductsError}
                     productList={productList} handleDeleteProducts={handleDeleteProducts} />
             </div>
-            {isDeleteProductError && (<span>Delete during trying to delete</span>)}
+            {isDeleteProductError && (<span>Error during trying to delete</span>)}
         </>
     )
 }
