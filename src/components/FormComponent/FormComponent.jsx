@@ -10,7 +10,7 @@ function FormComponent({ isCreateProductError, createProductHandler }) {
     const [sellerName, setSellerName] = useState('');
 
     function handleCreateProduct(e) {
-        createProductHandler(e, { asin, locale, price, name, link, sellerName, availability: true });
+        createProductHandler(e, { asin, locale, price: Number(price), name, link, sellerName, availability: true });
     }
 
     return (
@@ -25,7 +25,7 @@ function FormComponent({ isCreateProductError, createProductHandler }) {
                         value={locale} />
                 </label>
                 <label>Price
-                    <input type="text" onChange={e => setPrice(e.target.value)}
+                    <input type="number" onChange={e => setPrice(e.target.value)}
                         value={price} />
                 </label>
                 <label>Product Name
